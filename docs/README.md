@@ -117,9 +117,9 @@ docker exec products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
 - `/docker-compose.dev.yml` - Development Docker configuration
 
 ### Database
-- `/Products.Database/*.sql` - SQL scripts and stored procedures
-- `/Products.Database/Table.*.sql` - Table definitions
-- `/Products.Database/Procedure.*.sql` - Stored procedures
+- `/src/Products.Database/*.sql` - SQL scripts and stored procedures
+- `/src/Products.Database/Table.*.sql` - Table definitions
+- `/src/Products.Database/Procedure.*.sql` - Stored procedures
 
 ### Testing
 - `/.http/products-v1.http` - v1.0 API HTTP tests (50 tests)

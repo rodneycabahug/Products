@@ -165,7 +165,10 @@ Test Coverage:
 ### Prerequisites
 1. .NET 9 SDK installed
 2. SQL Server instance running
-3. Database schema deployed (use scripts in `Products.Database/`)
+2. Docker container running SQL Server
+3. Database schema deployed (use scripts in `src/Products.Database/`)
+4. Tests passing
+
 
 ### Configuration
 Update `appsettings.json`:

@@ -45,10 +45,10 @@ Products/
 │   ├── Products.API/              # API endpoints, middleware, Swagger
 │   ├── Products.Application/      # Business logic, services
 │   ├── Products.Domain/           # Core entities, exceptions
-│   └── Products.Infrastructure/   # Data access, repositories
+│   ├── Products.Infrastructure/   # Data access, repositories
+│   └── Products.Database/         # SQL scripts, migrations
 ├── tests/
 │   └── Products.Tests/            # Unit tests (TUnit)
-└── Products.Database/             # SQL scripts, migrations
 ```
 
 ### Key Technologies
@@ -196,13 +196,16 @@ git push origin feature/my-feature
 
 ### Database Changes
 ```bash
-# 1. Update stored procedures in Products.Database/
+### Database Changes
+```bash
+# 1. Update stored procedures in src/Products.Database/
 # 2. Apply changes
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -S localhost -U sa -P 'YourStrong@Passw0rd' -C \
-  < Products.Database/Procedure.YourProcedure.sql
+  < src/Products.Database/Procedure.YourProcedure.sql
 
 # 3. Test changes
+```
 curl http://localhost:8080/api/v1/products
 ```
 

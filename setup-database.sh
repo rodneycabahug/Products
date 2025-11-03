@@ -67,16 +67,16 @@ docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
 echo "Creating Product table..."
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
     -S localhost -U sa -P 'YourStrong@Passw0rd' -d ProductsDB -C \
-    < Products.Database/Table.Product.sql
+    < src/Products.Database/Table.Product.sql
 
 echo "Creating ProductOption table..."
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
     -S localhost -U sa -P 'YourStrong@Passw0rd' -d ProductsDB -C \
-    < Products.Database/Table.ProductOption.sql
+    < src/Products.Database/Table.ProductOption.sql
 
 # Run stored procedure scripts
 echo "Creating stored procedures..."
-for proc in Products.Database/Procedure.*.sql; do
+for proc in src/Products.Database/Procedure.*.sql; do
     if [ -f "$proc" ]; then
         echo "  - $(basename "$proc")"
         docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \

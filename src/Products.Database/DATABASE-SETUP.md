@@ -80,12 +80,12 @@ In `src/Products.API/appsettings.Development.json`:
 ### Step 4: Run Database Setup Script
 ```bash
 # From repository root
-sqlcmd -S "(localdb)\ProductsDB" -i Products.Database/Setup-Database.sql
+sqlcmd -S "(localdb)\ProductsDB" -i src/Products.Database/Setup-Database.sql
 ```
 
 Or use SQL Server Management Studio (SSMS):
 1. Connect to `(localdb)\ProductsDB`
-2. Open `Products.Database/Setup-Database.sql`
+2. Open `src/Products.Database/Setup-Database.sql`
 3. Execute (F5)
 
 ---
@@ -108,7 +108,7 @@ In `src/Products.API/appsettings.Development.json`:
 ### Step 3: Run Database Setup Script
 ```bash
 # From repository root
-sqlcmd -S "localhost\SQLEXPRESS" -i Products.Database/Setup-Database.sql
+sqlcmd -S "localhost\SQLEXPRESS" -i src/Products.Database/Setup-Database.sql
 ```
 
 ---
@@ -138,7 +138,7 @@ In `src/Products.API/appsettings.Development.json`:
 
 ### Run Database Setup Script
 ```bash
-sqlcmd -S "localhost" -i Products.Database/Setup-Database.sql
+sqlcmd -S "localhost" -i src/Products.Database/Setup-Database.sql
 ```
 
 ---
@@ -267,13 +267,15 @@ curl -X POST https://localhost:{port}/api/v1/products \
 If you prefer to run scripts individually:
 
 ```bash
+```bash
 # Create database manually first, then:
-sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i Products.Database/Table.Product.sql
-sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i Products.Database/Table.ProductOption.sql
+sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i src/Products.Database/Table.Product.sql
+sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i src/Products.Database/Table.ProductOption.sql
 
 # Create all stored procedures
-sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i Products.Database/Procedure.CreateProduct.sql
-sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i Products.Database/Procedure.RetrieveProducts.sql
+sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i src/Products.Database/Procedure.CreateProduct.sql
+sqlcmd -S "(localdb)\ProductsDB" -d ProductsDB -i src/Products.Database/Procedure.RetrieveProducts.sql
+```
 # ... (repeat for all procedures)
 ```
 

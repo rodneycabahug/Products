@@ -20,7 +20,7 @@ docker-compose logs -f sqlserver
 ```bash
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -S localhost -U sa -P 'YourStrong@Passw0rd' -C \
-  < Products.Database/Setup-Database.sql
+  < src/Products.Database/Setup-Database.sql
 ```
 
 4. **Update connection string** in `src/Products.API/appsettings.Development.json`:
@@ -64,7 +64,7 @@ sleep 10
 # Run setup script
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -S localhost -U sa -P 'YourStrong@Passw0rd' -C \
-  < Products.Database/Setup-Database.sql
+  < src/Products.Database/Setup-Database.sql
 ```
 
 ---
@@ -87,7 +87,7 @@ sqllocaldb start MSSQLLocalDB
 
 3. **Run setup script**
 ```powershell
-sqlcmd -S "(localdb)\MSSQLLocalDB" -i Products.Database\Setup-Database.sql
+sqlcmd -S "(localdb)\MSSQLLocalDB" -i src\Products.Database\Setup-Database.sql
 ```
 
 4. **Update connection string** in `appsettings.Development.json`:
@@ -220,4 +220,4 @@ Once database is configured and running:
 
 ---
 
-*See `Products.Database/DATABASE-SETUP.md` for detailed documentation*
+*See `src/Products.Database/DATABASE-SETUP.md` for detailed documentation*

@@ -267,7 +267,7 @@ Then copy and modernize files from the legacy projects:
 ## 📝 Notes
 
 - **Database**: The connection string points to LocalDB with the .mdf file. Ensure the database file is accessible.
-- **Stored Procedures**: All existing stored procedures in `Products.Database/` folder will be retained and used as-is.
+- **Stored Procedures**: All existing stored procedures in `src/Products.Database/` folder will be retained and used as-is.
 - **Testing**: Use TUnit with `[Test]` attribute. Global usings are configured automatically.
 - **Logging**: Logs will be written to `logs/products-api-{Date}.txt` with 7-day retention.
 

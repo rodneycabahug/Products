@@ -44,7 +44,7 @@ DB_EXISTS=$(docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd -S l
 
 if [ "$DB_EXISTS" = "0" ]; then
     echo "📊 Setting up database..."
-    docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'YourStrong@Passw0rd' -C < Products.Database/Setup-Database.sql
+    docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'YourStrong@Passw0rd' -C < src/Products.Database/Setup-Database.sql
     
     # Create missing procedures if needed
     docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'YourStrong@Passw0rd' -C -d ProductsDB -Q "IF NOT EXISTS (SELECT * FROM sys.procedures WHERE name = 'RetrieveProducts') BEGIN CREATE PROCEDURE [dbo].[RetrieveProducts] AS BEGIN SET NOCOUNT ON; SELECT [Id], [Name], [Description], [Price], [DeliveryPrice] FROM [dbo].[Product] ORDER BY [Name] END END" > /dev/null 2>&1

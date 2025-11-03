@@ -318,7 +318,7 @@ docker-compose -f docker-compose.dev.yml up -d
 ### Documentation
 - **Docker Guide**: `./DOCKER-GUIDE.md`
 - **API Documentation**: http://localhost:8080/swagger
-- **Database Setup**: `./Products.Database/DATABASE-SETUP.md`
+- **Database Setup**: `./src/Products.Database/DATABASE-SETUP.md`
 - **Migration Guide**: `./MIGRATION_COMPLETE_FINAL.md`
 
 ### Common Commands

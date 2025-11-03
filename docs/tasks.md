@@ -367,7 +367,7 @@ public async Task<ProductEntity?> RetrieveByIdAsync(Guid id)
 - [ ] Document database setup
 
 **Files to Review**:
-- All files in `Products.Database/` directory
+- All files in `src/Products.Database/` directory
 
 **Acceptance Criteria**:
 - Stored procedures work with .NET 9

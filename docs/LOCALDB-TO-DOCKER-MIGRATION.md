@@ -57,7 +57,11 @@ Migrated all LocalDB references to use Docker SQL Server for cross-platform comp
 **Files Updated**:
 - `README.md` - Removed LocalDB prerequisite
 - `docs/DATABASE-QUICKSTART.md` - Marked LocalDB as deprecated
-- `Products.Database/DATABASE-SETUP.md` - Added Docker as Option 1 (recommended)
+### Documentation Changes
+
+- `src/Products.Database/DATABASE-SETUP.md` - Added Docker as Option 1 (recommended)
+  - Comprehensive setup instructions for Docker-based development
+
 
 **Documentation Strategy**:
 - Docker SQL Server is now the **primary recommended approach**
@@ -177,7 +181,7 @@ LocalDB information has been retained in documentation but marked as **deprecate
 
 ### Where LocalDB is Still Documented
 - `docs/DATABASE-QUICKSTART.md` - Section marked "Deprecated"
-- `Products.Database/DATABASE-SETUP.md` - Option 2 (Windows Only - Deprecated)
+- `src/Products.Database/DATABASE-SETUP.md` - Option 2 (Windows Only - Deprecated)
 
 ### LocalDB Not Recommended Because
 - ❌ Windows-only (not cross-platform)
@@ -189,7 +193,7 @@ LocalDB information has been retained in documentation but marked as **deprecate
 ### If You Must Use LocalDB
 See deprecated sections in:
 - `docs/DATABASE-QUICKSTART.md`
-- `Products.Database/DATABASE-SETUP.md`
+- `src/Products.Database/DATABASE-SETUP.md`
 
 Update your `appsettings.Development.json`:
 ```json

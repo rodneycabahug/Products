@@ -235,7 +235,10 @@
 ### Database Setup Required
 The application compiles and starts successfully but requires:
 1. SQL Server database connection string in `appsettings.json`
-2. Database schema created (use scripts in `Products.Database/`)
+1. Docker container running SQL Server 2022
+2. Database schema created (use scripts in `src/Products.Database/`)
+3. API successfully connects
+
 3. Stored procedures deployed
 
 ### Configuration Example

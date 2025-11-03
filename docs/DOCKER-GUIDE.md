@@ -63,9 +63,11 @@ docker-compose up -d sqlserver
 docker-compose logs -f sqlserver
 
 # Run database setup script
+```bash
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \
   -S localhost -U sa -P 'YourStrong@Passw0rd' -C \
-  < Products.Database/Setup-Database.sql
+  < src/Products.Database/Setup-Database.sql
+```
 
 # Verify database
 docker exec -i products-sqlserver /opt/mssql-tools18/bin/sqlcmd \

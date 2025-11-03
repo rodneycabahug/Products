@@ -287,3 +287,7 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 /Products.Refactor
+
+# Application logs
+**/logs/
+*.log
