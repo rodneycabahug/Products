@@ -1,0 +1,40 @@
+# See https://aka.ms/customizecontainer to learn how to customize your debug container
+# and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+# Development dependencies
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+
+# Test projects
+**/tests/
+**/*.Test/
+**/*.Tests/
+
+# Documentation
+**/*.md
+!README.md
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+azure-pipelines.yml
+
+# Database scripts (handled separately)
+Products.Database/
+
+# Docker files
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Logs and temp files
+**/logs/
+**/temp/
+**/*.log

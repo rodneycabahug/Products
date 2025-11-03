@@ -1,0 +1,319 @@
+###
+# Products API v2.0 - Complete Test Suite
+# 
+# Description: Comprehensive HTTP test file for testing all Products API v2.0 endpoints
+# Tool: httpYac (VS Code Extension)
+# 
+# Note: This file tests v2.0 endpoints. If v2.0 has identical functionality to v1.0,
+#       the tests will be the same but with different API version.
+#       Update this file if v2.0 introduces new features or changes.
+#
+# Usage:
+# 1. Install httpYac extension in VS Code
+# 2. Start the API: dotnet run --project src/Products.API
+# 3. Click "Send Request" above each request
+# 4. Use "Send All Requests" to run the entire suite
+###
+
+@baseUrl = {{$dotenv baseUrl}}
+@apiVersion = 2.0
+
+###
+# ============================================================================
+# PRODUCTS - CRUD OPERATIONS (v2.0)
+# ============================================================================
+
+### 1. Get All Products
+# @name getAllProducts
+GET {{baseUrl}}/api/v{{apiVersion}}/products
+Accept: application/json
+
+###
+# Expected Response: 200 OK
+# Response should contain collection of products
+
+### 2. Search Products by Name
+# @name searchProducts
+GET {{baseUrl}}/api/v{{apiVersion}}/products?name=iPhone
+Accept: application/json
+
+###
+# Expected Response: 200 OK with filtered products
+
+### 3. Create New Product (v2.0)
+# @name createProduct
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Product v2.0",
+  "description": "Created via httpYac for v2.0 API testing",
+  "price": 299.99,
+  "deliveryPrice": 20.00
+}
+
+###
+# Expected Response: 201 Created
+@productId = {{createProduct.id}}
+
+### 4. Get Product by ID
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Accept: application/json
+
+###
+# Expected Response: 200 OK
+
+### 5. Update Product
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{productId}}",
+  "name": "Updated Product v2.0",
+  "description": "Updated via v2.0 API",
+  "price": 349.99,
+  "deliveryPrice": 25.00
+}
+
+###
+# Expected Response: 204 No Content
+
+### 6. Create Product for Options Testing
+# @name createProductForOptions
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Product with Options v2.0",
+  "description": "Testing options in v2.0",
+  "price": 599.99,
+  "deliveryPrice": 30.00
+}
+
+###
+@productWithOptionsId = {{createProductForOptions.id}}
+
+###
+# ============================================================================
+# PRODUCT OPTIONS - CRUD OPERATIONS (v2.0)
+# ============================================================================
+
+### 7. Get All Options for Product
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Accept: application/json
+
+###
+# Expected Response: 200 OK
+
+### 8. Create Product Option
+# @name createOption1
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Color",
+  "description": "Black"
+}
+
+###
+@option1Id = {{createOption1.id}}
+
+### 9. Create Another Option
+# @name createOption2
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Storage",
+  "description": "256GB"
+}
+
+###
+@option2Id = {{createOption2.id}}
+
+### 10. Get Specific Option
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Accept: application/json
+
+###
+# Expected Response: 200 OK
+
+### 11. Update Product Option
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{option1Id}}",
+  "name": "Color",
+  "description": "Matte Black"
+}
+
+###
+# Expected Response: 204 No Content
+
+### 12. Verify Update
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Accept: application/json
+
+###
+# Expected Response: 200 OK with "Matte Black"
+
+###
+# ============================================================================
+# ERROR SCENARIOS (v2.0)
+# ============================================================================
+
+### 13. Get Non-Existent Product
+GET {{baseUrl}}/api/v{{apiVersion}}/products/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found
+
+### 14. Create Product with Invalid Data
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "",
+  "description": "Invalid - empty name",
+  "price": 99.99,
+  "deliveryPrice": 5.00
+}
+
+###
+# Expected Response: 400 Bad Request
+
+### 15. Update Product - ID Mismatch
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000001",
+  "name": "Mismatch",
+  "description": "Should fail",
+  "price": 99.99,
+  "deliveryPrice": 5.00
+}
+
+###
+# Expected Response: 400 Bad Request
+
+### 16. Create Option for Non-Existent Product
+POST {{baseUrl}}/api/v{{apiVersion}}/products/00000000-0000-0000-0000-000000000000/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Invalid",
+  "description": "Product doesn't exist"
+}
+
+###
+# Expected Response: 404 Not Found
+
+### 17. Get Option with Wrong Product ID
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}/options/{{option1Id}}
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found
+
+###
+# ============================================================================
+# VERSION COMPATIBILITY TESTS
+# ============================================================================
+
+### 18. Test Without Version Parameter (should use default)
+GET {{baseUrl}}/api/products
+Accept: application/json
+
+###
+# Expected Response: Should use default version (likely v1.0)
+
+### 19. Test with Invalid Version
+GET {{baseUrl}}/api/v99.0/products
+Accept: application/json
+
+###
+# Expected Response: 400 Bad Request or 404 Not Found
+
+### 20. Test v1.0 vs v2.0 Response Differences
+# First get from v1.0
+GET {{baseUrl}}/api/v1.0/products
+Accept: application/json
+
+###
+# Then get from v2.0
+GET {{baseUrl}}/api/v2.0/products
+Accept: application/json
+
+###
+# Compare responses to identify any differences between versions
+
+###
+# ============================================================================
+# CLEANUP (v2.0)
+# ============================================================================
+
+### 21. Delete First Option
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+
+###
+# Expected Response: 204 No Content
+
+### 22. Delete Second Option
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option2Id}}
+
+###
+# Expected Response: 204 No Content
+
+### 23. Delete Product with Options
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}
+
+###
+# Expected Response: 204 No Content
+
+### 24. Delete First Test Product
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+
+###
+# Expected Response: 204 No Content
+
+### 25. Verify Deletion
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found
+
+###
+# ============================================================================
+# v2.0 SPECIFIC FEATURES (Add here if v2.0 has unique endpoints)
+# ============================================================================
+
+# TODO: Add v2.0 specific features here when they are implemented
+# Examples might include:
+# - Pagination support
+# - Filtering enhancements
+# - Sorting options
+# - Bulk operations
+# - Additional metadata
+# - New relationships
+
+###
+# ============================================================================
+# END OF v2.0 TEST SUITE
+# ============================================================================
+#
+# Note: If v2.0 is identical to v1.0, consider consolidating tests
+#       or using this file only for v2.0-specific features
+###

@@ -1,0 +1,592 @@
+###
+# Products API v1.0 - Complete Test Suite
+# 
+# Description: Comprehensive HTTP test file for testing all Products API v1.0 endpoints
+# Tool: httpYac (VS Code Extension)
+# 
+# Usage:
+# 1. Install httpYac extension in VS Code
+# 2. Start the API: dotnet run --project src/Products.API
+# 3. Click "Send Request" above each request
+# 4. Use "Send All Requests" to run the entire suite
+#
+# Variables are extracted from responses and reused in subsequent requests
+###
+
+@baseUrl = {{$dotenv baseUrl}}
+@apiVersion = 1.0
+
+###
+# ============================================================================
+# PRODUCTS - CRUD OPERATIONS
+# ============================================================================
+
+### 1. Get All Products
+# @name getAllProducts
+GET {{baseUrl}}/api/v{{apiVersion}}/products
+Accept: application/json
+
+###
+# Expected Response: 200 OK
+# {
+#   "items": [
+#     {
+#       "id": "guid",
+#       "name": "string",
+#       "description": "string",
+#       "price": 0.00,
+#       "deliveryPrice": 0.00
+#     }
+#   ]
+# }
+
+### 2. Search Products by Name
+# @name searchProducts
+GET {{baseUrl}}/api/v{{apiVersion}}/products?name=iPhone
+Accept: application/json
+
+###
+# Expected Response: 200 OK with filtered products
+
+### 3. Search Products by Partial Name
+GET {{baseUrl}}/api/v{{apiVersion}}/products?name=Apple
+Accept: application/json
+
+###
+# Expected Response: 200 OK with matching products
+
+### 4. Search Products - No Results
+GET {{baseUrl}}/api/v{{apiVersion}}/products?name=NonExistentProduct
+Accept: application/json
+
+###
+# Expected Response: 200 OK with empty items array
+
+### 5. Create New Product
+# @name createProduct
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Test Product - httpYac",
+  "description": "Created via httpYac for testing purposes",
+  "price": 199.99,
+  "deliveryPrice": 15.00
+}
+
+###
+# Expected Response: 201 Created
+# Location header with new resource URL
+# Response body contains created product with generated ID
+
+### Extract the created product ID for subsequent requests
+@productId = {{createProduct.id}}
+
+### 6. Get Product by ID (using created product)
+# @name getProductById
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Accept: application/json
+
+###
+# Expected Response: 200 OK with product details
+
+### 7. Get Product by ID - Not Found
+GET {{baseUrl}}/api/v{{apiVersion}}/products/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found
+
+### 8. Get Product by ID - Invalid GUID Format
+GET {{baseUrl}}/api/v{{apiVersion}}/products/invalid-guid
+Accept: application/json
+
+###
+# Expected Response: 400 Bad Request
+
+### 9. Update Product
+# @name updateProduct
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{productId}}",
+  "name": "Updated Test Product",
+  "description": "Updated via httpYac for testing",
+  "price": 249.99,
+  "deliveryPrice": 20.00
+}
+
+###
+# Expected Response: 204 No Content
+
+### 10. Update Product - ID Mismatch
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000001",
+  "name": "This should fail",
+  "description": "ID in URL doesn't match body",
+  "price": 99.99,
+  "deliveryPrice": 5.00
+}
+
+###
+# Expected Response: 400 Bad Request (ID mismatch)
+
+### 11. Update Product - Not Found
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "Non-existent Product",
+  "description": "This product doesn't exist",
+  "price": 99.99,
+  "deliveryPrice": 5.00
+}
+
+###
+# Expected Response: 404 Not Found
+
+### 12. Update Product - Missing Required Fields
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{productId}}",
+  "description": "Missing name field"
+}
+
+###
+# Expected Response: 400 Bad Request (validation error)
+
+### 13. Update Product - Null Body
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Content-Type: application/json
+Accept: application/json
+
+###
+# Expected Response: 400 Bad Request
+
+### 14. Create Another Product (for options testing)
+# @name createProductForOptions
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Product with Options",
+  "description": "This product will have options",
+  "price": 499.99,
+  "deliveryPrice": 25.00
+}
+
+###
+@productWithOptionsId = {{createProductForOptions.id}}
+
+###
+# ============================================================================
+# PRODUCT OPTIONS - CRUD OPERATIONS
+# ============================================================================
+
+### 15. Get All Options for a Product (initially empty)
+# @name getAllOptions
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Accept: application/json
+
+###
+# Expected Response: 200 OK with empty items array
+
+### 16. Create Product Option - Color Red
+# @name createOption1
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Color",
+  "description": "Red"
+}
+
+###
+# Expected Response: 201 Created with Location header
+@option1Id = {{createOption1.id}}
+
+### 17. Create Product Option - Color Blue
+# @name createOption2
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Color",
+  "description": "Blue"
+}
+
+###
+@option2Id = {{createOption2.id}}
+
+### 18. Create Product Option - Size Large
+# @name createOption3
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Size",
+  "description": "Large"
+}
+
+###
+@option3Id = {{createOption3.id}}
+
+### 19. Create Product Option - Size Small
+# @name createOption4
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Size",
+  "description": "Small"
+}
+
+###
+@option4Id = {{createOption4.id}}
+
+### 20. Get All Options for Product (should have 4 options now)
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Accept: application/json
+
+###
+# Expected Response: 200 OK with 4 options
+
+### 21. Get Specific Product Option
+# @name getOptionById
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Accept: application/json
+
+###
+# Expected Response: 200 OK with option details
+
+### 22. Get Product Option - Wrong Product ID
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}/options/{{option1Id}}
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found (option doesn't belong to this product)
+
+### 23. Get Product Option - Not Found
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found
+
+### 24. Get Product Option - Invalid GUID
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/invalid-guid
+Accept: application/json
+
+###
+# Expected Response: 400 Bad Request
+
+### 25. Create Product Option - For Non-Existent Product
+POST {{baseUrl}}/api/v{{apiVersion}}/products/00000000-0000-0000-0000-000000000000/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "This should fail",
+  "description": "Product doesn't exist"
+}
+
+###
+# Expected Response: 404 Not Found
+
+### 26. Create Product Option - Missing Required Fields
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+{
+  "description": "Missing name field"
+}
+
+###
+# Expected Response: 400 Bad Request (validation error)
+
+### 27. Create Product Option - Null Body
+POST {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Content-Type: application/json
+Accept: application/json
+
+###
+# Expected Response: 400 Bad Request
+
+### 28. Update Product Option
+# @name updateOption
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{option1Id}}",
+  "name": "Color",
+  "description": "Dark Red"
+}
+
+###
+# Expected Response: 204 No Content
+
+### 29. Update Product Option - ID Mismatch
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{option2Id}}",
+  "name": "This should fail",
+  "description": "ID mismatch"
+}
+
+###
+# Expected Response: 400 Bad Request
+
+### 30. Update Product Option - Wrong Product
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}/options/{{option1Id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{option1Id}}",
+  "name": "This should fail",
+  "description": "Wrong product"
+}
+
+###
+# Expected Response: 404 Not Found
+
+### 31. Update Product Option - Not Found
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "name": "Non-existent",
+  "description": "Doesn't exist"
+}
+
+###
+# Expected Response: 404 Not Found
+
+### 32. Update Product Option - Missing Fields
+PUT {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "id": "{{option1Id}}",
+  "description": "Missing name"
+}
+
+###
+# Expected Response: 400 Bad Request
+
+### 33. Verify Update Worked
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+Accept: application/json
+
+###
+# Expected Response: 200 OK with "Dark Red" description
+
+###
+# ============================================================================
+# DELETE OPERATIONS (Run these last as they clean up test data)
+# ============================================================================
+
+### 34. Delete Product Option
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+
+###
+# Expected Response: 204 No Content
+
+### 35. Delete Product Option - Already Deleted
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option1Id}}
+
+###
+# Expected Response: 404 Not Found
+
+### 36. Delete Product Option - Not Found
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/00000000-0000-0000-0000-000000000000
+
+###
+# Expected Response: 404 Not Found
+
+### 37. Delete Product Option - Wrong Product
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}/options/{{option2Id}}
+
+###
+# Expected Response: 404 Not Found
+
+### 38. Delete Remaining Options
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option2Id}}
+
+###
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option3Id}}
+
+###
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options/{{option4Id}}
+
+###
+# Expected Response for all: 204 No Content
+
+### 39. Verify All Options Deleted
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}/options
+Accept: application/json
+
+###
+# Expected Response: 200 OK with empty items array
+
+### 40. Delete Product (with no options)
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}
+
+###
+# Expected Response: 204 No Content
+
+### 41. Delete Product - Already Deleted
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productWithOptionsId}}
+
+###
+# Expected Response: 404 Not Found
+
+### 42. Delete Product - Not Found
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/00000000-0000-0000-0000-000000000000
+
+###
+# Expected Response: 404 Not Found
+
+### 43. Delete First Test Product
+DELETE {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+
+###
+# Expected Response: 204 No Content
+
+### 44. Verify Product Deleted
+GET {{baseUrl}}/api/v{{apiVersion}}/products/{{productId}}
+Accept: application/json
+
+###
+# Expected Response: 404 Not Found
+
+###
+# ============================================================================
+# EDGE CASES & ERROR SCENARIOS
+# ============================================================================
+
+### 45. Request with Invalid Content-Type
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: text/plain
+Accept: application/json
+
+This is plain text, not JSON
+
+###
+# Expected Response: 415 Unsupported Media Type or 400 Bad Request
+
+### 46. Request with Invalid JSON
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Invalid JSON",
+  "description": "This JSON is malformed"
+  "price": 99.99
+}
+
+###
+# Expected Response: 400 Bad Request
+
+### 47. Request with Negative Price
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Negative Price Product",
+  "description": "Should fail validation",
+  "price": -10.00,
+  "deliveryPrice": 5.00
+}
+
+###
+# Expected Response: 400 Bad Request (if validation in place)
+
+### 48. Request with Very Large Numbers
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Expensive Product",
+  "description": "Testing large numbers",
+  "price": 999999999.99,
+  "deliveryPrice": 999999.99
+}
+
+###
+# Expected Response: 201 Created or 400 Bad Request (depending on validation)
+
+### 49. Request with Empty String Name
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "",
+  "description": "Empty name should fail",
+  "price": 99.99,
+  "deliveryPrice": 5.00
+}
+
+###
+# Expected Response: 400 Bad Request (validation error)
+
+### 50. Request with Null Values
+POST {{baseUrl}}/api/v{{apiVersion}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": null,
+  "description": null,
+  "price": null,
+  "deliveryPrice": null
+}
+
+###
+# Expected Response: 400 Bad Request
+
+###
+# ============================================================================
+# END OF TEST SUITE
+# ============================================================================
+# 
+# Summary: 50 test cases covering:
+# - Product CRUD operations
+# - Product Option CRUD operations  
+# - Search and filtering
+# - Error handling (404, 400, etc.)
+# - Edge cases and validation
+# - ID mismatches and invalid formats
+# 
+# All requests are designed to be run sequentially with variable extraction
+###

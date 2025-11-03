@@ -1,0 +1,91 @@
+2025-11-03 19:39:55.645 +13:00 [WRN] Failed to determine the https port for redirect.
+2025-11-03 19:39:55.673 +13:00 [INF] HTTP GET /health responded 200 in 29.0199 ms
+2025-11-03 19:39:55.743 +13:00 [ERR] HTTP GET /api/v1/products responded 500 in 46.8388 ms
+System.PlatformNotSupportedException: LocalDB is not supported on this platform.
+   at Microsoft.Data.SqlClient.ManagedSni.LocalDB.GetLocalDBConnectionString(String localDbInstance)
+   at Microsoft.Data.SqlClient.ManagedSni.SniProxy.GetLocalDBDataSource(String fullServerName, Boolean& error)
+   at Microsoft.Data.SqlClient.ManagedSni.SniProxy.CreateConnectionHandle(String fullServerName, TimeoutTimer timeout, Byte[]& instanceName, ResolvedServerSpn& resolvedSpn, String serverSPN, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+   at Microsoft.Data.SqlClient.ManagedSni.TdsParserStateObjectManaged.CreatePhysicalSNIHandle(String serverName, TimeoutTimer timeout, Byte[]& instanceName, ResolvedServerSpn& resolvedSpn, Boolean flushCache, Boolean async, Boolean parallel, SqlConnectionIPAddressPreference iPAddressPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, String serverSPN, Boolean isIntegratedSecurity, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, IDbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionPoolGroupProviderInfo poolGroupProviderInfo, IDbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(IDbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 28
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 49
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 49
+   at Products.Application.Services.ProductService.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Application/Services/ProductService.cs:line 19
+   at Products.API.Endpoints.v1.ProductsEndpoints.GetAllProducts(IProductService productService, CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.API/Endpoints/v1/ProductsEndpoints.cs:line 48
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+2025-11-03 19:39:55.747 +13:00 [ERR] An unhandled exception has occurred while executing the request.
+System.PlatformNotSupportedException: LocalDB is not supported on this platform.
+   at Microsoft.Data.SqlClient.ManagedSni.LocalDB.GetLocalDBConnectionString(String localDbInstance)
+   at Microsoft.Data.SqlClient.ManagedSni.SniProxy.GetLocalDBDataSource(String fullServerName, Boolean& error)
+   at Microsoft.Data.SqlClient.ManagedSni.SniProxy.CreateConnectionHandle(String fullServerName, TimeoutTimer timeout, Byte[]& instanceName, ResolvedServerSpn& resolvedSpn, String serverSPN, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+   at Microsoft.Data.SqlClient.ManagedSni.TdsParserStateObjectManaged.CreatePhysicalSNIHandle(String serverName, TimeoutTimer timeout, Byte[]& instanceName, ResolvedServerSpn& resolvedSpn, Boolean flushCache, Boolean async, Boolean parallel, SqlConnectionIPAddressPreference iPAddressPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, String serverSPN, Boolean isIntegratedSecurity, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, IDbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionPoolGroupProviderInfo poolGroupProviderInfo, IDbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(IDbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 28
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 49
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 49
+   at Products.Application.Services.ProductService.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Application/Services/ProductService.cs:line 19
+   at Products.API.Endpoints.v1.ProductsEndpoints.GetAllProducts(IProductService productService, CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.API/Endpoints/v1/ProductsEndpoints.cs:line 48
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-11-03 19:39:55.749 +13:00 [ERR] An unhandled exception occurred: LocalDB is not supported on this platform.
+System.PlatformNotSupportedException: LocalDB is not supported on this platform.
+   at Microsoft.Data.SqlClient.ManagedSni.LocalDB.GetLocalDBConnectionString(String localDbInstance)
+   at Microsoft.Data.SqlClient.ManagedSni.SniProxy.GetLocalDBDataSource(String fullServerName, Boolean& error)
+   at Microsoft.Data.SqlClient.ManagedSni.SniProxy.CreateConnectionHandle(String fullServerName, TimeoutTimer timeout, Byte[]& instanceName, ResolvedServerSpn& resolvedSpn, String serverSPN, Boolean flushCache, Boolean async, Boolean parallel, Boolean isIntegratedSecurity, SqlConnectionIPAddressPreference ipPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+   at Microsoft.Data.SqlClient.ManagedSni.TdsParserStateObjectManaged.CreatePhysicalSNIHandle(String serverName, TimeoutTimer timeout, Byte[]& instanceName, ResolvedServerSpn& resolvedSpn, Boolean flushCache, Boolean async, Boolean parallel, SqlConnectionIPAddressPreference iPAddressPreference, String cachedFQDN, SQLDNSInfo& pendingDNSInfo, String serverSPN, Boolean isIntegratedSecurity, Boolean tlsFirst, String hostNameInCertificate, String serverCertificateFilename)
+   at Microsoft.Data.SqlClient.TdsParser.Connect(ServerInfo serverInfo, SqlInternalConnectionTds connHandler, TimeoutTimer timeout, SqlConnectionString connectionOptions, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.AttemptOneLogin(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, TimeoutTimer timeout, Boolean withFailover)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.LoginNoFailover(ServerInfo serverInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString connectionOptions, SqlCredential credential, TimeoutTimer timeout)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds.OpenLoginEnlist(TimeoutTimer timeout, SqlConnectionString connectionOptions, SqlCredential credential, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance)
+   at Microsoft.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling, String accessToken, IDbConnectionPool pool, Func`3 accessTokenCallback)
+   at Microsoft.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionPoolGroupProviderInfo poolGroupProviderInfo, IDbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at Microsoft.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(IDbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at Microsoft.Data.SqlClient.ConnectionPool.WaitHandleDbConnectionPool.WaitForPendingOpen()
+--- End of stack trace from previous location ---
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 28
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 49
+   at Products.Infrastructure.Repositories.ProductRepository.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Infrastructure/Repositories/ProductRepository.cs:line 49
+   at Products.Application.Services.ProductService.RetrieveAsync(CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.Application/Services/ProductService.cs:line 19
+   at Products.API.Endpoints.v1.ProductsEndpoints.GetAllProducts(IProductService productService, CancellationToken cancellationToken) in /Users/rodney.cabahug/Projects/Personal/Products/src/Products.API/Endpoints/v1/ProductsEndpoints.cs:line 48
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Serilog.AspNetCore.RequestLoggingMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-11-03 19:40:34.775 +13:00 [WRN] Failed to determine the https port for redirect.
+2025-11-03 19:40:34.801 +13:00 [INF] HTTP GET /health responded 200 in 26.9816 ms
+2025-11-03 19:40:38.327 +13:00 [INF] HTTP GET /api/v1/products responded 200 in 139.2659 ms
+2025-11-03 19:40:43.420 +13:00 [INF] HTTP GET /api/v1/products/search responded 200 in 30.9830 ms
+2025-11-03 19:40:48.096 +13:00 [INF] HTTP GET /api/v1/products/d2fb389c-99a3-4973-b6e8-5a31ffaa141d/options responded 200 in 15.4270 ms
